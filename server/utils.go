@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"golang.org/x/crypto/ssh"
 )
@@ -131,4 +132,26 @@ func changeName(ch ssh.Channel, uid int, firstTime bool) {
 
 		break
 	}
+}
+
+func SendMsg(to any, from, toName, text string) {
+	timeStr := time.Now().Format("15:04")
+	msg := fmt.Sprintf("%s -> %s | %s\n: %s\n", from, toName, timeStr, text)
+
+	switch ch := to.(type) {
+	case ssh.Channel:
+		ch.Write([]byte(msg))
+	case Output:
+		ch.WriteLine(msg)
+	default:
+		fmt.Printf("Unknown output type: %T\n%s", to, msg)
+	}
+}
+
+func PrintMsg(from, to, text string) {
+	timeStr := time.Now().Format("15:04")
+
+	msg := fmt.Sprintf("%s -> %s | %s \n: %s \n", from, to, timeStr, text)
+
+	fmt.Printf(msg)
 }
