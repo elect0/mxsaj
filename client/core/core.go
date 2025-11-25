@@ -10,7 +10,6 @@ import (
 	"strings"
 	"time"
 
-	"golang.org/x/crypto/nacl/sign"
 	"golang.org/x/crypto/ssh"
 )
 
